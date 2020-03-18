@@ -1,0 +1,83 @@
+<style>
+  @import url("https://fonts.googleapis.com/css?family=Sen&display=swap");
+
+  * {
+    font-family: "Sen", sans-serif;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 60px;
+  }
+
+  h1 {
+    color: lightgreen;
+  }
+
+  li {
+    font-weight: bold;
+  }
+
+  li:nth-child(odd) {
+    background: #f7f7f7;
+  }
+
+  .delete {
+    border: none;
+    background: tomato;
+    padding: 10px 12px;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+
+  .form {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-left: 25px;
+  }
+
+  input[type="text"] {
+    border: 1px solid greenyellow;
+    padding: 10px;
+    display: inline;
+  }
+
+  .add {
+    border: none;
+    background: greenyellow;
+    padding: 10px 12px;
+    color: #181818;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+</style>
+
+<h1>Todo List</h1>
+
+<ol>
+  {% for item in all_todo_items %}
+  <li style="margin: 10px 0; padding: 10px;">
+    {{item.content}}
+    <form
+      action="/delete_todo/{{item.id}}/"
+      style="display: inline;"
+      method="POST"
+    >
+      {% csrf_token %}
+      <input type="submit" value="Delete" class="delete" />
+    </form>
+  </li>
+  {% endfor %}
+</ol>
+
+<div class="form">
+  <form action="/add_todo/" method="POST">
+    {% csrf_token %}
+    <input type="text" name="content" placeholder="Type a todo..." />
+    <input type="submit" value="Add" class="add" />
+  </form>
+</div>
