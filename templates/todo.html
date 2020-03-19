@@ -1,83 +1,136 @@
-<style>
-  @import url("https://fonts.googleapis.com/css?family=Sen&display=swap");
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDo App</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css?family=Sen&display=swap");
 
-  * {
-    font-family: "Sen", sans-serif;
-  }
+      * {
+        font-family: "Sen", sans-serif;
+      }
 
-  body {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    margin: 60px;
-  }
+      body {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin: 60px;
+        background: #f8f8f8;
+      }
 
-  h1 {
-    color: lightgreen;
-  }
+      h1 {
+        color: lightgreen;
+      }
 
-  li {
-    font-weight: bold;
-  }
+      li {
+        font-weight: bold;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
 
-  li:nth-child(odd) {
-    background: #f7f7f7;
-  }
+      li:nth-child(odd) {
+        background: #f7f7f7;
+      }
 
-  .delete {
-    border: none;
-    background: tomato;
-    padding: 10px 12px;
-    color: #fff;
-    cursor: pointer;
-    margin-left: 10px;
-  }
+      ol {
+        width: 100%;
+        padding-left: 0;
+      }
 
-  .form {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    margin-left: 25px;
-  }
+      .main {
+        background: #fff;
+        padding: 20px;
+        box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 580px;
+      }
 
-  input[type="text"] {
-    border: 1px solid greenyellow;
-    padding: 10px;
-    display: inline;
-  }
+      .delete {
+        border: none;
+        background: tomato;
+        padding: 7px 12px;
+        color: #fff;
+        cursor: pointer;
+        margin-left: 10px;
+        float: right;
+      }
 
-  .add {
-    border: none;
-    background: greenyellow;
-    padding: 10px 12px;
-    color: #181818;
-    cursor: pointer;
-    margin-left: 10px;
-  }
-</style>
+      .form {
+        display: flex;
+        align-items: center;
+        display: inline-block;
+        width: 100%;
+      }
 
-<h1>Todo List</h1>
+      .form > form {
+        width: 100%;
+        display: flex;
+      }
 
-<ol>
-  {% for item in all_todo_items %}
-  <li style="margin: 10px 0; padding: 10px;">
-    {{item.content}}
-    <form
-      action="/delete_todo/{{item.id}}/"
-      style="display: inline;"
-      method="POST"
-    >
-      {% csrf_token %}
-      <input type="submit" value="Delete" class="delete" />
-    </form>
-  </li>
-  {% endfor %}
-</ol>
+      input[type="text"] {
+        border: 1px solid greenyellow;
+        padding: 20px;
+        width: 100%;
+      }
 
-<div class="form">
-  <form action="/add_todo/" method="POST">
-    {% csrf_token %}
-    <input type="text" name="content" placeholder="Type a todo..." />
-    <input type="submit" value="Add" class="add" />
-  </form>
-</div>
+      .add {
+        border: none;
+        background: greenyellow;
+        padding: 20px;
+        color: #181818;
+        cursor: pointer;
+        margin-left: 10px;
+      }
+
+      span {
+        cursor: pointer;
+      }
+
+      .done {
+        color: tomato;
+        opacity: 0.3;
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <h1>Todo List</h1>
+
+      <ol>
+        {% for item in all_todo_items %}
+        <li>
+          <span
+            class="{% if item.isDone %} done {% endif %}"
+            onclick="{location.href='/done_todo/{{item.id}}/'}"
+          >
+            {{item.content}}
+          </span>
+          <form
+            action="/delete_todo/{{item.id}}/"
+            style="display: inline;"
+            method="POST"
+          >
+            {% csrf_token %}
+            <input type="submit" value="Delete" class="delete" />
+          </form>
+        </li>
+        {% endfor %}
+      </ol>
+
+      <div class="form">
+        <form action="/add_todo/" method="POST">
+          {% csrf_token %}
+          <input type="text" name="content" placeholder="Type a todo..." />
+          <input type="submit" value="Add" class="add" />
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

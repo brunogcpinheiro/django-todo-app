@@ -17,3 +17,10 @@ def add_todo(request):
 def delete_todo(request, todo_id):
     TodoItem.objects.get(id=todo_id).delete()
     return HttpResponseRedirect('/')
+
+
+def done_todo(request, todo_id):
+    selected_todo = TodoItem.objects.get(id=todo_id)
+    selected_todo.isDone = not selected_todo.isDone
+    selected_todo.save()
+    return HttpResponseRedirect('/')
